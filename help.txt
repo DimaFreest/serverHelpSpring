@@ -1,0 +1,10 @@
+http://testservermyhost.ddns.net:8080/api/message
+
+GET http://localhost:8080/api/message?in_name=name&out_name=name1
+
+POST http://testservermyhost.ddns.net:8080/api/message
+{
+    "in_user" : "name",
+    "message" : "hello",
+    "out_user" : "name1"
+}
