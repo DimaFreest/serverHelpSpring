@@ -1,6 +1,6 @@
 http://testservermyhost.ddns.net:8080/api/message
 
-GET http://localhost:8080/api/message?in_name=name&out_name=name1
+GET http://testservermyhost.ddns.net:8080/api/message?in_name=name&out_name=name1
 
 POST http://testservermyhost.ddns.net:8080/api/message
 {
@@ -25,7 +25,7 @@ namespace ConsoleApp1
         static async Task Main(string[] args)
         {
             string s = "";
-            WebRequest request = WebRequest.Create("http://localhost:8080/api/message");
+            WebRequest request = WebRequest.Create("http://testservermyhost.ddns.net:8080/api/message");
             WebResponse response = await request.GetResponseAsync();
             using (Stream stream = response.GetResponseStream())
             {
