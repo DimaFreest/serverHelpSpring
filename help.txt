@@ -105,7 +105,7 @@ namespace ConsoleApp1
             // преобразуем данные в массив байтов
             byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(data);
             // устанавливаем тип содержимого - параметр ContentType
-            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = "application/json";
             // Устанавливаем заголовок Content-Length запроса - свойство ContentLength
             request.ContentLength = byteArray.Length;
 
@@ -130,13 +130,13 @@ namespace ConsoleApp1
 
     class Message
     {
-        [JsonPropertyName("in_name")]
+        [JsonPropertyName("in_user")]
         public string in_name { get; set; }
 
         [JsonPropertyName("message")]
         public string message { get; set; }
 
-        [JsonPropertyName("out_name")]
+        [JsonPropertyName("out_user")]
         public string out_name { get; set; }
         public Message( string in_name, string message, string out_name)
         {
@@ -146,3 +146,4 @@ namespace ConsoleApp1
         }
     }
 }
+
