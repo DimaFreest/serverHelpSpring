@@ -66,3 +66,83 @@ namespace ConsoleApp1
         }
     }
 }
+
+
+
+
+
+
+
+post
+
+
+
+
+using System;
+using System.Net;
+using System.IO;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Collections.Generic;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            WebRequest request = WebRequest.Create("http://testservermyhost.ddns.net:8080/api/message");
+            request.Method = "POST"; // для отправки используется метод Post
+                                     // данные для отправки
+
+            Message m = new Message("name", "message", "name1");
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            string data = JsonSerializer.Serialize<Message>(m, options);
+            // преобразуем данные в массив байтов
+            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(data);
+            // устанавливаем тип содержимого - параметр ContentType
+            request.ContentType = "application/x-www-form-urlencoded";
+            // Устанавливаем заголовок Content-Length запроса - свойство ContentLength
+            request.ContentLength = byteArray.Length;
+
+            //записываем данные в поток запроса
+            using (Stream dataStream = request.GetRequestStream())
+            {
+                dataStream.Write(byteArray, 0, byteArray.Length);
+            }
+
+            WebResponse response = await request.GetResponseAsync();
+            using (Stream stream = response.GetResponseStream())
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    Console.WriteLine(reader.ReadToEnd());
+                }
+            }
+            response.Close();
+            Console.WriteLine("Запрос выполнен...");
+        }
+    }
+
+    class Message
+    {
+        [JsonPropertyName("in_name")]
+        public string in_name { get; set; }
+
+        [JsonPropertyName("message")]
+        public string message { get; set; }
+
+        [JsonPropertyName("out_name")]
+        public string out_name { get; set; }
+        public Message( string in_name, string message, string out_name)
+        {
+            this.in_name = in_name;
+            this.message = message;
+            this.out_name = out_name;
+        }
+    }
+}
